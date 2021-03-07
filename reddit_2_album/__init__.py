@@ -32,10 +32,11 @@ reddit = praw.Reddit(
 
 def get(path):
     try:
-        reddit_id = path.split('/')[6]
+        reddit_id = path.split('/')[6] # may need to revisit
     except:
         reddit_id = path
     submission = reddit.submission(reddit_id)
+    print(submission.url)
     result = Result()
     if submission.url != submission.permalink:
         result.imgs = [submission.url]

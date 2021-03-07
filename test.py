@@ -18,4 +18,4 @@ def test(url):
 if __name__=='__main__':
 	# test('http://www.reddit.com/r/Feminism/comments/lz1nj2/truth/')
 	test('http://www.reddit.com/r/Feminism/comments/lyz02f/behold_the_protective_power_of_soiled_sanity_pads/')
-	test('http://www.reddit.com/r/Feminism/comments/lya1fw/the_answer_is_no/')
+	# test('http://www.reddit.com/r/Feminism/comments/lya1fw/the_answer_is_no/')
