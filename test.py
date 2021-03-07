@@ -14,7 +14,7 @@ chat = tele.bot.get_chat(CREDENTIALS['channel'])
 def test(url):
 	result = reddit_2_album.get(url)
 	print(result)
-	album_sender.send_v2(chat, result)
+	# album_sender.send_v2(chat, result)
 	
 if __name__=='__main__':
 	test('https://www.reddit.com/r/Feminism/comments/libkyn/i_thought_everyone_needed_to_see_this/')

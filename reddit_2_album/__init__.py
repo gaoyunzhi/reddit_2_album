@@ -71,6 +71,9 @@ def get(path):
         result.imgs = list(getGallery(submission.url))
         return result
 
+    # 'v.redd.it' in submission.url 
+    # check if we want to deal with video
+
     if isWebpage(submission.url):
         result.cap += '\n\n' + submission.url
     else:
