@@ -7,6 +7,8 @@ from telegram_util import AlbumResult as Result
 import yaml
 import os
 import praw
+import cached_url
+from bs4 import BeautifulSoup
 
 def getCredential():
     for root, _, files in os.walk("."):
@@ -30,18 +32,31 @@ reddit = praw.Reddit(
     username=credential['reddit_username'],
 )
 
+def getGallery(url):
+    content = cached_url.get(url, force_cache=True)
+    soup = BeautifulSoup(content, 'html.parser')
+    for item in soup.find_all('a'):
+        if item.parent.name != 'figure':
+            continue
+        yield item['href'] 
+
+def getImgs(submission):
+    if submission.url == submission.permalink:
+        return []
+    if 'gallery' not in submission.url.split('/'):
+        result.imgs = [submission.url]
+    return list(getGallery(submission.url))
+
 def get(path):
     try:
         reddit_id = path.split('/')[6] # may need to revisit
     except:
         reddit_id = path
     submission = reddit.submission(reddit_id)
-    print(submission.url)
     result = Result()
-    if submission.url != submission.permalink:
-        result.imgs = [submission.url]
-    result.cap_html = '[ %s ]' % submission.title
+    result.imgs = getImgs(submission)
+    result.cap_html = submission.title
     if submission.selftext:
-        result.cap_html += '\n\n%s' % submission.selftext
+        result.cap_html = '[ %s ]\n\n%s' % (submission.title, submission.selftext)
     result.cap_html += ' <a href="https://www.reddit.com%s">source</a>' % submission.permalink
     return result
