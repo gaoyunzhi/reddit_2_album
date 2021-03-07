@@ -11,31 +11,11 @@ with open('CREDENTIALS') as f:
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 chat = tele.bot.get_chat(CREDENTIALS['channel'])
 
-def test(url, rotate=False):
+def test(url):
 	result = reddit_2_album.get(url)
-	print(result)
-	album_sender.send_v2(chat, result, rotate=rotate)
-
-def findSrc(item):
-	START_PIVOT = '"src":"'
-	END_PIVOT = '","'
-	for script in item.find_all('script'):
-		return script.text.split(START_PIVOT)[1].split(END_PIVOT)[0]
-
-def sendPhoto(url, item):
-	result = Result()
-	src = findSrc(item)
-	if not src:
-		return
-	result.imgs = [src]
-	result.cap = item.find('span', itemprop='caption').text
-	album_sender.send(channel, url, result)
-
-def sendPhotos(url):
-	content = cached_url.get(url, force_cache=True)
-	b = BeautifulSoup(content, features='lxml')
-	for item in b.find_all('figure'):
-		sendPhoto(url, item)
+	album_sender.send_v2(chat, result)
 	
 if __name__=='__main__':
-	
+	test('https://www.reddit.com/r/Feminism/comments/lz1nj2/truth/')
+	# test('https://www.reddit.com/r/Feminism/comments/lyz02f/behold_the_protective_power_of_soiled_sanity_pads/')
+	# test('https://www.reddit.com/r/Feminism/comments/lya1fw/the_answer_is_no/')
