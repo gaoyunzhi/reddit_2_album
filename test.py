@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import web_2_album
+import reddit_2_album
 import album_sender
 import yaml
 from telegram.ext import Updater
@@ -16,7 +16,7 @@ chat = tele.bot.get_chat(-1001198682178)
 # chat = tele.bot.get_chat('@web_record')
 
 def test(url, rotate=False):
-	result = web_2_album.get(url)
+	result = reddit_2_album.get(url)
 	print(result)
 	album_sender.send_v2(chat, result, rotate=rotate)
 

@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="web_2_album",
-    version="0.0.49",
+    name="reddit_2_album",
+    version="0.0.1",
     author="Yunzhi Gao",
     author_email="gaoyunzhi@gmail.com",
-    description="Return photo list and caption (markdown format) from web.",
+    description="Return photo list and caption (markdown format) from reddit.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/gaoyunzhi/web_2_album",
+    url="https://github.com/gaoyunzhi/reddit_2_album",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -19,12 +19,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'cached_url',
         'bs4',
         'telegram_util',
-        'export_to_telegraph',
-        'readee',
         'pyyaml',
+        'praw',
     ],
     python_requires='>=3.0',
 )

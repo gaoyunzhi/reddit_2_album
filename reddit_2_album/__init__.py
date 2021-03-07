@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-name = 'web_2_album'
+name = 'reddit_2_album'
 
 import cached_url
 from bs4 import BeautifulSoup
