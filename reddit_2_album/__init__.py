@@ -44,7 +44,7 @@ def getGallery(url):
 def isWebpage(url):
     if url.endswith('mp4'):
         return False
-    cached_url.get(url, force_cache=True)
+    cached_url.get(url, mode='b', force_cache=True)
     try:
         Image.open(cached_url.getFilePath(url))
         return False
