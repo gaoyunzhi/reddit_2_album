@@ -63,9 +63,6 @@ def get(path):
     result.cap = submission.title
     if submission.selftext:
         result.cap += '\n\n%s' % submission.selftext
-    
-    if submission.url == submission.permalink:
-        return result
 
     if 'gallery' in submission.url.split('/'):
         result.imgs = list(getGallery(submission.url))
