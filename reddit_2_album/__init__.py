@@ -9,6 +9,7 @@ import os
 import praw
 import cached_url
 from bs4 import BeautifulSoup
+from PIL import Image
 
 def getCredential():
     for root, _, files in os.walk("."):
@@ -40,12 +41,15 @@ def getGallery(url):
             continue
         yield item['href'] 
 
-def getImgs(submission):
-    if submission.url == submission.permalink:
-        return []
-    if 'gallery' not in submission.url.split('/'):
-        return [submission.url]
-    return list(getGallery(submission.url))
+def isWebpage(url):
+    if url.endswith('mp4'):
+        return False
+    cached_url.get(url, force_cache=True)
+    try:
+        Image.open(cached_url.getFilePath(url))
+        return False
+    except:
+        return True
 
 def get(path):
     try:
@@ -54,9 +58,21 @@ def get(path):
         reddit_id = path
     submission = reddit.submission(reddit_id)
     result = Result()
-    result.imgs = getImgs(submission)
+    result.url = path
+    
     result.cap = submission.title
     if submission.selftext:
         result.cap += '\n\n%s' % submission.selftext
-    result.url = path
+    
+    if submission.url == submission.permalink:
+        return result
+
+    if 'gallery' in submission.url.split('/'):
+        result.imgs = list(getGallery(submission.url))
+        return result
+
+    if isWebpage(submission.url):
+        result.cap += '\n\n' + submission.url
+    else:
+        result.imgs = [submission.url]
     return result

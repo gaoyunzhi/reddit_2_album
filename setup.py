@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="reddit_2_album",
-    version="0.0.4",
+    version="0.0.5",
     author="Yunzhi Gao",
     author_email="gaoyunzhi@gmail.com",
     description="Return photo list and caption (markdown format) from reddit.",
@@ -24,6 +24,7 @@ setuptools.setup(
         'pyyaml',
         'praw',
         'cached_url',
+        'Pillow',
     ],
     python_requires='>=3.0',
 )
