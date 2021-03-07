@@ -55,8 +55,8 @@ def get(path):
     submission = reddit.submission(reddit_id)
     result = Result()
     result.imgs = getImgs(submission)
-    result.cap_html = submission.title
+    result.cap = submission.title
     if submission.selftext:
-        result.cap_html = '[ %s ]\n\n%s' % (submission.title, submission.selftext)
-    result.cap_html += ' <a href="https://www.reddit.com%s">source</a>' % submission.permalink
+        result.cap += '\n\n%s' % submission.selftext
+    result.url = path
     return result
