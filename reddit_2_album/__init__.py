@@ -44,7 +44,7 @@ def getImgs(submission):
     if submission.url == submission.permalink:
         return []
     if 'gallery' not in submission.url.split('/'):
-        result.imgs = [submission.url]
+        return [submission.url]
     return list(getGallery(submission.url))
 
 def get(path):
