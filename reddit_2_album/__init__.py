@@ -3,23 +3,17 @@
 
 name = 'reddit_2_album'
 
-import cached_url
-from bs4 import BeautifulSoup
-import export_to_telegraph
 from telegram_util import matchKey, cutCaption, getWid, parseDomain
 from telegram_util import AlbumResult as Result
-import readee
-import time
 import yaml
-import sys
 
-IMG_CLASSES = ['f-m-img', 'group-pic', 'image-wrapper', 
-	'RichText', 'image-container', 'news_txt', "'article_con'", 
-	'photo_wrap', 'hideBeforeLoad', 'slide_container', 'rich_media_content',
-	'is-widgets', 'entry-content', 'image-show', 
-	'o-noteContentImage__item', 'open-list-post-description',
-	'open-list-media-container', 'article-inline-photo',
-	'tl_article_content']
+reddit = praw.Reddit(
+	client_id=credential['reddit_client_id'],
+	client_secret=credential['reddit_client_secret'],
+	password=credential['reddit_password'],
+	user_agent="testscript",
+	username=credential['reddit_username'],
+)
 
 try:
 	with open('CREDENTIALS') as f:
@@ -144,16 +138,11 @@ def getContent(path, force_cache=False):
 		return '<div><title>%s</title>%s</div>' % (json['data']['title'], json['data']['content'])
 	return cached_url.get(path, force_cache=force_cache)
 
-def get(path, force_cache=False):
-	path = path.replace('m.douban.com', 'www.douban.com')
-	content = getContent(path, force_cache=force_cache)
-	b = BeautifulSoup(content, features='lxml')
+def get(path):
+	reddit_id = path.split('/')[6]
+	reddit.submission(reddit_id)
 	result = Result()
 	result.imgs = getImgs(b, path)
 	result.cap = getCap(b, path)
-	if result.imgs and not result.cap:
-		# don't know if this is the right thing to do, revisit if needed
-		result.cap = getCapForce(b, path)
-	result.video = getVideo(b)
 	result.url = path
 	return result
