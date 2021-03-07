@@ -3,16 +3,16 @@
 
 name = 'reddit_2_album'
 
-from telegram_util import matchKey, cutCaption, getWid, parseDomain
 from telegram_util import AlbumResult as Result
 import yaml
 import os
+import praw
 
 def getCredential():
     for root, _, files in os.walk("."):
         for file in files:
             if 'credential' in file.lower():
-                 try:
+                try:
                     with open(os.path.join(root, file)) as f:  
                         credential = yaml.load(f, Loader=yaml.FullLoader)
                         credential['reddit_client_id']
@@ -31,13 +31,16 @@ reddit = praw.Reddit(
 )
 
 def get(path):
-    reddit_id = path.split('/')[6]
+    try:
+        reddit_id = path.split('/')[6]
+    except:
+        reddit_id = path
     submission = reddit.submission(reddit_id)
     result = Result()
     if submission.url != submission.permalink:
         result.imgs = [submission.url]
-    result.cap = '[ %s ]' % submission.title
+    result.cap_html = '[ %s ]' % submission.title
     if submission.selftext:
-        result.cap += '\n\n%s' % submission.selftext
-    result.url = path 
+        result.cap_html += '\n\n%s' % submission.selftext
+    result.cap_html += ' <a href="https://www.reddit.com%s">source</a>' % submission.permalink
     return result
