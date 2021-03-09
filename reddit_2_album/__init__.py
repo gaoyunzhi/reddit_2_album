@@ -31,6 +31,7 @@ reddit = praw.Reddit(
     password=credential['reddit_password'],
     user_agent="testscript",
     username=credential['reddit_username'],
+    check_for_async=False,
 )
 
 def getGallery(url):
